@@ -6,7 +6,7 @@ import pigpio
 class DHT22:
    """
    A class to read relative humidity and temperature from the
-   DHT22 sensor.  The sensor is also known as the AM2302.
+   DHT22 sensor.
    """
 
    def __init__(self, gpio=23):
