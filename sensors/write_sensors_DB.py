@@ -330,7 +330,6 @@ class DB_handler:
                 
             root_logger.error(': {0} - SENSOR: '.format(sensor) + str(e))
 
-
     def eraseDB(self):
         global path
 
@@ -403,7 +402,7 @@ def ensure_single_instance_of_app():
         except IOError as e:
             msg = ('{} may already be running. Only one instance of it '
                    'allowed.'
-                   ).format('raw2')
+                   ).format('write_sensors_DB')
             print(' LOCK: ' + str(msg))
             exit()
 
