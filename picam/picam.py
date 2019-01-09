@@ -31,15 +31,18 @@ if sys.platform == "linux":
 ######################################################################
 ## Hoa: 06.10.2018 Version 1 : picam.py
 ######################################################################
-# This class takes 3 consecutive images with increasing shutter times.
+# This script takes 3 consecutive images with increasing shutter times.
 # Pictures are in raw bayer format. In addition a jpg as reference
 # image is taken for each raw image.
 #
 # Proper exposure is maintained by a simple gradient descent, trying
 # to keep the delta between measured brightness and desired minimal.
 #
-# Start and end time, are set here inside the script ! Script is run
-# by a cronjob.
+# Start and end time, are set here, inside the script!
+# Script is started by a cronjob.
+#
+# Inspired by :
+# https://github.com/sdenton4/pipic/blob/master/timelapse.py
 #
 # New /Changes:
 # ----------------------------------------------------------------------
@@ -47,7 +50,7 @@ if sys.platform == "linux":
 # 24.09.2018 : First implemented
 # 30.09.2018 : Added image mask
 # 03.09.2018 : Using a mask for histogram
-# 06.10.2018 : Adjusted to run on raspberry pi
+# 06.10.2018 : Minor improvements
 ######################################################################
 
 global SCRIPTPATH
@@ -332,7 +335,7 @@ class Camera:
     Once the Camera class is initialized, use the `findinitialparams` method to find
     an initial value for shutterspeed to match the targetBrightness.
     Then run the `take_picture` method to initiate the actual process.
-    EXAMPLE::
+    EXAMPLE:
       camera = Camera()
       camera.take_picture()
     """
@@ -410,13 +413,13 @@ class Camera:
         state.currentSS = config.floatToSS(x)
 
         # Find an appropriate framerate.
-        # For low shutter speeds, ths can considerably speed up the capture.
+        # For low shutter speeds, this can considerably speed up the capture.
         FR = Fraction(1000000, state.currentSS)
         if FR > config.max_fr: FR = Fraction(config.max_fr)
         if FR < config.min_fr: FR = Fraction(config.min_fr)
         state.currentFR = FR
 
-    def whiten_maske(self,img):
+    def whiten_mask(self, img):
         # out = image[np.where((image == [0, 0, 0]).all(axis=2))] = [255, 255, 255]
         img[np.where((img <= [50, 50, 50]).all(axis=2))] = [255, 255, 255]
 
@@ -425,8 +428,8 @@ class Camera:
     def findinitialparams(self, config=None, state=None):
 
         """
-        Take a number of small shots in succession to determine shutterspeed
-        and ISO for taking photos of the desired brightness.
+        Take a number of small shots in succession to determine
+        initial shutterspeed.
         """
         if config is None: config = self.config
         if state is None: state = self.state
@@ -445,7 +448,7 @@ class Camera:
             state.brData = [self.avgbrightness(im,None)]
             state.xData = [self.config.SSToFloat(state.currentSS)]
 
-            # Dynamically adjust ss and iso.
+            # Dynamically adjust shuttertime
             self.dynamic_adjust(init_config, state)
             print('Searching init. params { ss: % 4d\t x: % 6.4f br: % 4d\t}' % (state.currentSS, round(state.xData[-1], 1), round(state.brData[-1], 4)))
             if state.xData[-1] >= 1.0:
@@ -490,11 +493,11 @@ class Camera:
         stream = io.BytesIO()
 
         if (resize_width is not None and resize_hight is not None):
-            #self.writh_EXIF(config, state)
+            #self.write_EXIF(config, state)
             self.camera.capture(stream, format='jpeg',resize=(resize_width, resize_hight), bayer=False)
 
         else:
-            #self.writh_EXIF(config, state)
+            #self.write_EXIF(config, state)
             self.camera.capture(stream, format='jpeg',bayer=False)
 
 
@@ -510,11 +513,11 @@ class Camera:
         if w == 96 and h == 128:
             centre = [52,65]  # y,x
             radius = 54
-            masked_img = self.maske_image(image, [w, h, c], centre, radius,False)
+            masked_img = self.mask_image(image, [w, h, c], centre, radius, False)
         elif config.camera_ID == 2:
             centre = [1090,1296]  # y,x [1100,1296]
             radius = 1080         # 1100
-            masked_img = self.maske_image(image,[w,h,c],centre,radius,False)
+            masked_img = self.mask_image(image, [w, h, c], centre, radius, False)
 
         return masked_img
 
@@ -565,7 +568,7 @@ class Camera:
         try:
             '''
             By default ss_adjust = true.
-            Take and evaluate pictures as long shutter time is not adjusted
+            Take and evaluate pictures as long, the shutter time is not adjusted
             '''
             if not ss_adjust: return
             if config is None: config = self.config
@@ -648,7 +651,7 @@ class Camera:
 
         return (image_mask)
 
-    def maske_image(self, input_image, size=[1944, 2592, 3], centre=[972, 1296], radius=1350, show_mask=False):  # 880,1190, r = 1450
+    def mask_image(self, input_image, size=[1944, 2592, 3], centre=[972, 1296], radius=1350, show_mask=False):  # 880,1190, r = 1450
 
         empty_img = np.zeros(size, dtype=np.uint8)
         mask = self.cmask(centre, radius, empty_img)
