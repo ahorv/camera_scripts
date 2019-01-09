@@ -12,20 +12,26 @@ np.set_printoptions(threshold=np.nan)
 from glob import glob
 from numpy.lib.stride_tricks import as_strided
 import matplotlib.cm as cm
-import scipy
-from scipy import ndimage
-import imageio
-
 
 global images_path
 global output_path
-#images_path = r'C:\Hoa_Python_Projects\RemoteDebugEx\hist\input\20171025_140139'  # @home
-#images_path = r'C:\Users\tahorvat\PycharmProjects\python_scripts\hist\input\20171025_140139'  # @lab
-#output_path = r'C:\Users\tahorvat\PycharmProjects\python_scripts\hist\output'
 
 images_path = r'C:\Users\tahorvat\Desktop\20180409_090414'
 output_path = r'C:\Users\tahorvat\Desktop\20180409_090414'
 
+######################################################################
+## Hoa: 11.2.2018 Version 1 : raw2img_2.py
+######################################################################
+# simplified version of raw2img_1.py  to de-bayer a raw image (*.data)
+#
+#
+#
+# New /Changes:
+# ----------------------------------------------------------------------
+#
+# 11.2.2018 : first implemented
+#
+######################################################################
 
 def load_data_as_img():
     try:

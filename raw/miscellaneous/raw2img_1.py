@@ -16,11 +16,19 @@ global images_path
 #images_path = r'C:\Hoa_Python_Projects\RemoteDebugEx\hist\input\20171025_140139'  # @home
 images_path = r'C:\Users\tahorvat\PycharmProjects\python_scripts\hist\input\20171025_140139'  # @lab
 
-###############################################################
+######################################################################
+## Hoa: 07.2.2018 Version 1 : data2img.py
+######################################################################
+# script to test de-bayering of a raw image (numpy array, aka *.data - file)
 #
-# With de-bayering
 #
-###############################################################
+#
+# New /Changes:
+# ----------------------------------------------------------------------
+#
+# 07.2.2018 : first implemented
+#
+######################################################################
 
 def load_data_as_img():
     try:
