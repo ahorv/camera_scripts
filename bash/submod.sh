@@ -1,7 +1,7 @@
 #!/bin/bash
-# sets file permission to all subdirectories in camera_scripts
-# use bash submod.sh
+# sets r/w permission for user 'pi' to all subdirectories in camera_scripts
 # needs to be located within the same directory as camera_scripts
+# use: bash submod.sh
 
 for d in $(find /home/pi/camera_scripts -maxdepth 1 -type d)
 do
