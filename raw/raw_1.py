@@ -240,7 +240,7 @@ class Helpers:
         except IOError as e:
             print('ZIPALL : Could not create *.zip file: ' + str(e))
 
-    def disk_stat(self):
+    def disk_stats(self):
 
         try:
             s = Logger()
@@ -265,7 +265,7 @@ def main():
         helper = Helpers()
         helper.setPathAndNewFolders()
 
-        usedspace = helper.disk_stat()
+        usedspace = helper.disk_stats()
         if usedspace > 80:
             raise RuntimeError('WARNING: Not enough free space on SD Card!')
             return

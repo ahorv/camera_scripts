@@ -265,7 +265,7 @@ class Helpers:
         except IOError as e:
             print('PERM : Could not set permissions for file: ' + str(e))
 
-    def disk_stat(self):
+    def disk_stats(self):
 
         try:
             global disc_stat_once
@@ -305,7 +305,7 @@ class Helpers:
 def main():
     try:
         helper = Helpers()
-        usedspace = helper.disk_stat()
+        usedspace = helper.disk_stats()
         helper.ensure_single_instance_of_app()
         s = Logger()
         log = s.getLogger()
