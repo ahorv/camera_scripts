@@ -586,7 +586,7 @@ class Camera:
             state.xData.append(self.config.SSToFloat(state.currentSS))
             state.brData.append(state.lastbr)
 
-            # Dynamically adjust ss and iso.
+            # Dynamically adjust ss 
             state.avgbr = sum(state.brData) / len(state.brData)
             self.dynamic_adjust(config, state)
 
