@@ -41,7 +41,8 @@ if sys.platform == "linux":
 # Start and end time, are set here, inside the script!
 # Script is started by a cronjob.
 #
-# Inspired by :
+# Based on the work from Tom Denton :
+# https://inventingsituations.net/2014/01/01/pilapse3/
 # https://github.com/sdenton4/pipic/blob/master/timelapse.py
 #
 # New /Changes:
