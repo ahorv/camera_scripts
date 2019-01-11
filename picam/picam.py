@@ -568,7 +568,7 @@ class Camera:
         try:
             '''
             By default ss_adjust = true.
-            Take and evaluate pictures as long, the shutter time is not adjusted
+            Take and evaluate pictures as long, the shutter speed is not adjusted
             '''
             if not ss_adjust: return
             if config is None: config = self.config
@@ -586,7 +586,7 @@ class Camera:
             state.xData.append(self.config.SSToFloat(state.currentSS))
             state.brData.append(state.lastbr)
 
-            # Dynamically adjust ss 
+            # Dynamically adjust ss
             state.avgbr = sum(state.brData) / len(state.brData)
             self.dynamic_adjust(config, state)
 
