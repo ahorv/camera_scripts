@@ -421,6 +421,9 @@ class Camera:
         state.currentFR = FR
 
     def whiten_mask(self, img):
+        """
+        makes the maske visible by setting all pixel to the color red
+        """
         # out = image[np.where((image == [0, 0, 0]).all(axis=2))] = [255, 255, 255]
         img[np.where((img <= [50, 50, 50]).all(axis=2))] = [255, 255, 255]
 
